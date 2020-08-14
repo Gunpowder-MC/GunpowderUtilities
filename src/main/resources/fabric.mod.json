@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "gunpowder-utilities",
+  "version": "${version}",
+  "name": "Gunpowder Utilities",
+  "description": "Gunpowder Utilities Module",
+  "license": "MIT",
+  "icon": "assets/gunpowder/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "gunpowder:modules": [
+      "io.github.gunpowder.GunpowderUtilitiesModule"
+    ]
+  },
+  "mixins": [
+    "mixins.utilities.gunpowder.json"
+  ],
+  "depends": {
+    "gunpowder-base": ">=${gunpowder}",
+    "fabricloader": ">=0.8.9",
+    "fabric": "*"
+  }
+}
