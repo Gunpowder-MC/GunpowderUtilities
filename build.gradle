@@ -7,7 +7,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "5.2.0"
     id 'com.matthewprenger.cursegradle' version '1.4.0'
     id "com.dorongold.task-tree" version "1.5"
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0-rc'
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin"
 }
 
 // Settings
@@ -75,7 +75,7 @@ dependencies {
     implementation "org.jetbrains.exposed:exposed-java-time:$project.exposed"
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$project.kotlin"
 
     // Other mods
     modImplementation("io.github.ladysnake:PlayerAbilityLib:${project.pal}") { transitive = false }
