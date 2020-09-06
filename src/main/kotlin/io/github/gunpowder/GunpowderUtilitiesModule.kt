@@ -33,7 +33,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 class GunpowderUtilitiesModule : GunpowderModule {
     override val name = "utilities"
     override val toggleable = true
-    val gunpowder: GunpowderMod = GunpowderMod.instance
+    val gunpowder = GunpowderMod.instance
 
     override fun registerCommands() {
         gunpowder.registry.registerCommand(EnderchestCommand::register)
