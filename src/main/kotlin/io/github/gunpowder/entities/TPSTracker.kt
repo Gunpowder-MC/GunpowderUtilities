@@ -22,17 +22,21 @@
  * SOFTWARE.
  */
 
-package io.github.nyliummc.essentials.entities
+package io.github.gunpowder.entities
 
 import java.lang.Double.min
 
-class TPSTracker(val id: String) {
+class TPSTracker {
     private var lastTime = System.nanoTime()
     private val history = mutableListOf<Double>()
     private val msptHistory = mutableListOf<Long>()
     private val intervalTicks = 1000 / 20  // max tps = 20
 
-    fun tick() {
+    fun startTick() {
+        lastTime = System.nanoTime()
+    }
+
+    fun endTick() {
         val startTime = System.nanoTime()
         var timeSpent = (startTime - lastTime) / 1000  // Millis
         if (timeSpent == 0L) {
@@ -45,7 +49,6 @@ class TPSTracker(val id: String) {
         val tps = intervalTicks * 1_000_000.0 / timeSpent
         history.add(min(tps, 20.0))
         msptHistory.add(timeSpent / 1000)
-        lastTime = startTime
     }
 
     fun getTps(): Double = history.average()

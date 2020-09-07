@@ -27,7 +27,7 @@ package io.github.gunpowder
 import io.github.gunpowder.api.GunpowderMod
 import io.github.gunpowder.api.GunpowderModule
 import io.github.gunpowder.commands.*
-import io.github.nyliummc.essentials.entities.TPSTracker
+import io.github.gunpowder.entities.TPSTracker
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 
 class GunpowderUtilitiesModule : GunpowderModule {
@@ -51,8 +51,11 @@ class GunpowderUtilitiesModule : GunpowderModule {
     }
 
     override fun registerEvents() {
+        ServerTickEvents.START_WORLD_TICK.register(ServerTickEvents.StartWorldTick { world ->
+            getTracker(world.registryKey.value.path).startTick()
+        })
         ServerTickEvents.END_WORLD_TICK.register(ServerTickEvents.EndWorldTick { world ->
-            getTracker(world.registryKey.value.path).tick()
+            getTracker(world.registryKey.value.path).endTick()
         })
     }
 
@@ -63,7 +66,7 @@ class GunpowderUtilitiesModule : GunpowderModule {
         fun getTracker(name: String): TPSTracker {
             var c = tpsTrackers[name]
             if (c == null) {
-                c = TPSTracker(name)
+                c = TPSTracker()
                 tpsTrackers[name] = c
             }
             return c
