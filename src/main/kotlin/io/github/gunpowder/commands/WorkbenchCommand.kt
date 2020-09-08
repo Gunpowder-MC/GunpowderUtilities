@@ -31,7 +31,6 @@ import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.screen.CraftingScreenHandler
 import net.minecraft.screen.ScreenHandlerContext
-import net.minecraft.screen.ScreenHandlerFactory
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.TranslatableText
@@ -39,14 +38,17 @@ import net.minecraft.text.TranslatableText
 object WorkbenchCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
-            command("workbench", "wb") {
+            command("workbench", "wb", "craft") {
                 executes(WorkbenchCommand::openWorkbench)
             }
         }
     }
 
     private fun openWorkbench(context: CommandContext<ServerCommandSource>): Int {
-        context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> CraftingScreenHandler(i, playerInventory, ScreenHandlerContext.EMPTY) }, TranslatableText("container.crafting")))
+        context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int,
+                                                                                  playerInventory: PlayerInventory?, _: PlayerEntity? ->
+            CraftingScreenHandler(i, playerInventory, ScreenHandlerContext.EMPTY)
+        }, TranslatableText("container.crafting")))
         return 1
     }
 }

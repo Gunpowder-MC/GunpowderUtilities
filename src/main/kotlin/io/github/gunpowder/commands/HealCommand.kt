@@ -39,7 +39,7 @@ object HealCommand {
                 requires { it.hasPermissionLevel(4) }
                 executes(HealCommand::healSelf)
 
-                argument("player", EntityArgumentType.player()) {
+                argument("target", EntityArgumentType.player()) {
                     requires { it.hasPermissionLevel(4) }
                     executes(HealCommand::healOther)
                 }
@@ -56,7 +56,7 @@ object HealCommand {
     }
 
     private fun healOther(context: CommandContext<ServerCommandSource>): Int {
-        val player = EntityArgumentType.getPlayer(context, "player")
+        val player = EntityArgumentType.getPlayer(context, "target")
         healPlayer(player)
         context.source.sendFeedback(
                 LiteralText("Successfully healed ${player.displayName.asString()}"),
