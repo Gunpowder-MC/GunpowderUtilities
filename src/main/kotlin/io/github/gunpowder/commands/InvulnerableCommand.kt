@@ -36,7 +36,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 
 object InvulnerableCommand {
-    private val ESSENTIALS_ABILITY_GOD: AbilitySource = Pal.getAbilitySource("essentials", "invulnerable")
+    private val ESSENTIALS_ABILITY_GOD = Pal.getAbilitySource("essentials", "invulnerable")
 
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {

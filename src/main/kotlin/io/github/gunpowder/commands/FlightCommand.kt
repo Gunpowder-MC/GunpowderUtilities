@@ -36,7 +36,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 
 object FlightCommand {
-    private val ESSENTIALS_ABILITY_FLY: AbilitySource = Pal.getAbilitySource("essentials", "flight");
+    private val ESSENTIALS_ABILITY_FLY = Pal.getAbilitySource("essentials", "flight");
 
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {

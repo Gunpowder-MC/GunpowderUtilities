@@ -26,6 +26,7 @@ package io.github.gunpowder.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.BoolArgumentType
+import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
 import io.github.gunpowder.mixin.cast.PlayerVanish
 import net.minecraft.command.argument.EntityArgumentType
@@ -38,27 +39,30 @@ object VanishCommand {
         Command.builder(dispatcher) {
             command("vanish") {
                 requires { it.hasPermissionLevel(4) }
-                executes { vanish(it.source.player) }
+                executes(::vanish)
                 //TODO: Implement for offline players.
                 argument("target", EntityArgumentType.player()) {
                     argument("set", BoolArgumentType.bool()) {
-                        executes {
-                            vanish(
-                                    EntityArgumentType.getPlayer(it, "target"),
-                                    BoolArgumentType.getBool(it, "set"),
-                                    it.source.player
-                            )
-                        }
+                        executes(::setTarget)
                     }
-                    executes { vanish(EntityArgumentType.getPlayer(it, "target"), it.source.player) }
+                    executes(::toggleTarget)
                 }
             }
         }
     }
 
-    private fun vanish(target: ServerPlayerEntity) = vanish(target, !(target as PlayerVanish).isVanished)
+    private fun vanish(ctx: CommandContext<ServerCommandSource>) = vanish(ctx.source.player, !(ctx.source.player as PlayerVanish).isVanished)
 
-    private fun vanish(target: ServerPlayerEntity, player: ServerPlayerEntity) = vanish(target, !(target as PlayerVanish).isVanished, player)
+    private fun setTarget(ctx: CommandContext<ServerCommandSource>) = vanish(
+            EntityArgumentType.getPlayer(ctx, "target"),
+            BoolArgumentType.getBool(ctx, "set"),
+            ctx.source.player
+    )
+
+    private fun toggleTarget(ctx: CommandContext<ServerCommandSource>): Int {
+        val target = EntityArgumentType.getPlayer(ctx, "target")
+        return vanish(target, !(target as PlayerVanish).isVanished, ctx.source.player)
+    }
 
     private fun vanish(player: ServerPlayerEntity, set: Boolean, target: ServerPlayerEntity = player): Int {
         (target as PlayerVanish).isVanished = set

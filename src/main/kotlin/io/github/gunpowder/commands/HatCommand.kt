@@ -28,6 +28,7 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.builders.Text
 import net.minecraft.item.Wearable
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.text.LiteralText
@@ -63,9 +64,13 @@ object HatCommand {
         player.setStackInHand(Hand.MAIN_HAND, head)
         player.inventory.armor[3] = hand
         player.sendMessage(
-                LiteralText("Enjoy your new ")
-                        .append(TranslatableText(hand.item.translationKey).formatted(Formatting.YELLOW))
-                        .append(LiteralText(" hat!")),
+                Text.builder {
+                    text("Enjoy your new ")
+                    text(TranslatableText(hand.item.translationKey)) {
+                        color(Formatting.YELLOW)
+                    }
+                    text(" hat!")
+                },
                 true
         )
         return 1

@@ -25,6 +25,7 @@
 package io.github.gunpowder.commands
 
 import com.mojang.brigadier.CommandDispatcher
+import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.entity.player.PlayerEntity
@@ -46,20 +47,24 @@ object EnderchestCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("enderchest", "ec") {
-                executes { open(it.source.player) }
+                executes(::open)
                 //TODO: Implement for offline player.
                 argument("target", EntityArgumentType.player()) {
                     requires { it.hasPermissionLevel(4) }
-                    executes { open(it.source.player, EntityArgumentType.getPlayer(it, "target")) }
+                    executes(::openTarget)
                 }
             }
         }
     }
 
+    private fun open(ctx: CommandContext<ServerCommandSource>) = open(ctx.source.player)
+
+    private fun openTarget(ctx: CommandContext<ServerCommandSource>) = open(ctx.source.player, EntityArgumentType.getPlayer(ctx, "target"))
+
     private fun open(player: ServerPlayerEntity, target: ServerPlayerEntity = player): Int {
         val enderChestInventory: EnderChestInventory = target.enderChestInventory
         player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int,
-                                                                   playerInventory: PlayerInventory?, _: PlayerEntity? ->
+                                                                   playerInventory: PlayerInventory, _: PlayerEntity ->
             GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, enderChestInventory)
         },
                 if (player == target) containerName

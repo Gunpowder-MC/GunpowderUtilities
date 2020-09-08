@@ -46,7 +46,7 @@ object WorkbenchCommand {
 
     private fun openWorkbench(context: CommandContext<ServerCommandSource>): Int {
         context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int,
-                                                                                  playerInventory: PlayerInventory?, _: PlayerEntity? ->
+                                                                                  playerInventory: PlayerInventory, _: PlayerEntity ->
             CraftingScreenHandler(i, playerInventory, ScreenHandlerContext.EMPTY)
         }, TranslatableText("container.crafting")))
         return 1
