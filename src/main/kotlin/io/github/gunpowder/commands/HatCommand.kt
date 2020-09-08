@@ -26,11 +26,18 @@ package io.github.gunpowder.commands
 
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType
 import io.github.gunpowder.api.builders.Command
+import net.minecraft.item.Wearable
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.text.LiteralText
+import net.minecraft.text.TranslatableText
+import net.minecraft.util.Formatting
 import net.minecraft.util.Hand
 
 object HatCommand {
+    private val ILLEGAL_ITEM_EXCEPTION = SimpleCommandExceptionType(LiteralText("You can't use that item as a hat!"))
+
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("hat") {
@@ -42,14 +49,25 @@ object HatCommand {
     private fun execute(context: CommandContext<ServerCommandSource>): Int {
         val player = context.source.player
         val hand = player.mainHandStack
+        if (hand.item is Wearable) {
+            throw ILLEGAL_ITEM_EXCEPTION.create()
+        }
+
         val head = player.inventory.armor[3]
 
         if (hand.isEmpty) {
-            return 0
+            player.sendMessage(LiteralText("Put an item in your hand first!"), false)
+            return -1
         }
 
         player.setStackInHand(Hand.MAIN_HAND, head)
         player.inventory.armor[3] = hand
+        player.sendMessage(
+                LiteralText("Enjoy your new ")
+                        .append(TranslatableText(hand.item.translationKey).formatted(Formatting.YELLOW))
+                        .append(LiteralText(" hat!")),
+                false
+        )
         return 1
     }
 }
