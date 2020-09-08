@@ -38,7 +38,7 @@ class GunpowderUtilitiesModule : GunpowderModule {
     override fun registerCommands() {
         gunpowder.registry.registerCommand(EnderchestCommand::register)
         gunpowder.registry.registerCommand(FlightCommand::register)
-        gunpowder.registry.registerCommand(GodCommand::register)
+        gunpowder.registry.registerCommand(InvulnerableCommand::register)
         gunpowder.registry.registerCommand(HatCommand::register)
         gunpowder.registry.registerCommand(HeadCommand::register)
         gunpowder.registry.registerCommand(HealCommand::register)
