@@ -25,34 +25,48 @@
 package io.github.gunpowder.commands
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.EnderChestInventory
 import net.minecraft.screen.GenericContainerScreenHandler
-import net.minecraft.screen.ScreenHandlerFactory
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.stat.Stats
+import net.minecraft.text.LiteralText
 import net.minecraft.text.TranslatableText
+import net.minecraft.util.Formatting
 
 object EnderchestCommand {
+    private val containerName
+        get() = TranslatableText("container.enderchest")
+
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("enderchest", "ec") {
-                executes(EnderchestCommand::openEnderchest)
+                executes { open(it.source.player) }
+                //TODO: Implement for offline player.
+                argument("target", EntityArgumentType.player()) {
+                    requires { it.hasPermissionLevel(4) }
+                    executes { open(it.source.player, EntityArgumentType.getPlayer(it, "target")) }
+                }
             }
         }
     }
 
-    private fun openEnderchest(context: CommandContext<ServerCommandSource>): Int {
-        val player = context.source.player;
-        val enderChestInventory: EnderChestInventory = player.enderChestInventory
+    private fun open(player: ServerPlayerEntity, target: ServerPlayerEntity = player): Int {
+        val enderChestInventory: EnderChestInventory = target.enderChestInventory
+        player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int,
+                                                                   playerInventory: PlayerInventory?, _: PlayerEntity? ->
+            GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, enderChestInventory)
+        },
+                if (player == target) containerName
+                else containerName.append(" ").append(LiteralText(target.entityName).formatted(Formatting.YELLOW))
+        ))
 
-        player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, enderChestInventory) }, TranslatableText("container.enderchest")))
         player.incrementStat(Stats.OPEN_ENDERCHEST)
-
         return 1
     }
 }

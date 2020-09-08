@@ -25,54 +25,59 @@
 package io.github.gunpowder.commands
 
 import com.mojang.brigadier.CommandDispatcher
-import com.mojang.brigadier.context.CommandContext
+import com.mojang.brigadier.arguments.BoolArgumentType
 import io.github.gunpowder.api.builders.Command
 import io.github.gunpowder.mixin.cast.PlayerVanish
+import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
-import net.minecraft.util.Formatting
 
 object VanishCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("vanish") {
                 requires { it.hasPermissionLevel(4) }
-                literal("toggle") {
-                    executes(VanishCommand::toggleVanish)
+                executes { vanish(it.source.player) }
+                //TODO: Implement for offline players.
+                argument("target", EntityArgumentType.player()) {
+                    argument("set", BoolArgumentType.bool()) {
+                        executes {
+                            vanish(
+                                    EntityArgumentType.getPlayer(it, "target"),
+                                    BoolArgumentType.getBool(it, "set"),
+                                    it.source.player
+                            )
+                        }
+                    }
+                    executes { vanish(EntityArgumentType.getPlayer(it, "target"), it.source.player) }
                 }
-                executes (VanishCommand::displayVanishInfo)
             }
         }
     }
 
-    private fun toggleVanish(ctx: CommandContext<ServerCommandSource>): Int {
-        val player = ctx.source.player as PlayerVanish
-        player.isVanished = !player.isVanished
+    private fun vanish(target: ServerPlayerEntity) = vanish(target, !(target as PlayerVanish).isVanished)
 
-        // Sending info to player
-        ctx.source.player.sendMessage(
-                LiteralText(
-                        if (player.isVanished)
-                            "Puff! You have vanished from the world."
-                        else
-                            "You are now no longer vanished."
-                ).formatted(Formatting.AQUA),
-                true
-        )
-        return 1
-    }
+    private fun vanish(target: ServerPlayerEntity, player: ServerPlayerEntity) = vanish(target, !(target as PlayerVanish).isVanished, player)
 
-    private fun displayVanishInfo(ctx: CommandContext<ServerCommandSource>): Int {
-        val player = ctx.source.player
-        player.sendMessage(
-                LiteralText(
-                        if ((player as PlayerVanish).isVanished)
-                            "You are vanished."
-                        else
-                            "You're not vanished."
-                ).formatted(Formatting.AQUA),
-                true
-        )
-        return 1
+    private fun vanish(player: ServerPlayerEntity, set: Boolean, target: ServerPlayerEntity = player): Int {
+        (target as PlayerVanish).isVanished = set
+        if (player == target)
+            player.sendMessage(
+                    LiteralText(
+                            if (set)
+                                "Puff! You have vanished from the world."
+                            else
+                                "You are no longer vanished."
+                    ),
+                    true
+            )
+        else
+            target.sendMessage(
+                    LiteralText("${player.entityName} set vanish to $set for you!"),
+                    true
+            )
+
+        return if (set) 1 else 0
     }
 }

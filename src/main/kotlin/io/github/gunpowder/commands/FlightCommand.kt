@@ -27,6 +27,7 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.ladysnake.pal.AbilitySource
 import io.github.ladysnake.pal.Pal
 import io.github.ladysnake.pal.VanillaAbilities
 import net.minecraft.command.argument.EntityArgumentType
@@ -35,7 +36,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 
 object FlightCommand {
-    val ESSENTIALS_ABILITY_FLY = Pal.getAbilitySource("essentials", "flight");
+    private val ESSENTIALS_ABILITY_FLY: AbilitySource = Pal.getAbilitySource("essentials", "flight");
 
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
@@ -43,9 +44,8 @@ object FlightCommand {
                 requires { it.hasPermissionLevel(4) }
 
                 executes(FlightCommand::toggleFlightSelf)
-                argument("player", EntityArgumentType.player()) {
+                argument("target", EntityArgumentType.player()) {
                     requires { it.hasPermissionLevel(4) }
-
                     executes(FlightCommand::toggleFlightOther)
                 }
             }
@@ -66,7 +66,7 @@ object FlightCommand {
 
     private fun toggleFlightOther(commandContext: CommandContext<ServerCommandSource>): Int {
         // Get player
-        val player = EntityArgumentType.getPlayer(commandContext, "player")
+        val player = EntityArgumentType.getPlayer(commandContext, "target")
 
         // Set flight
         toggleFlight(player)
