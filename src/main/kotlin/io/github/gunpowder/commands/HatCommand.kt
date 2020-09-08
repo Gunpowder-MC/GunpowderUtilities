@@ -66,7 +66,7 @@ object HatCommand {
                 LiteralText("Enjoy your new ")
                         .append(TranslatableText(hand.item.translationKey).formatted(Formatting.YELLOW))
                         .append(LiteralText(" hat!")),
-                false
+                true
         )
         return 1
     }
