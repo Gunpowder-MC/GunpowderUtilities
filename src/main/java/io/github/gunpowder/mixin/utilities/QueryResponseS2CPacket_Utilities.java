@@ -64,8 +64,12 @@ public class QueryResponseS2CPacket_Utilities {
             fakedGameProfiles.add(player.getGameProfile());
         }
 
-
-        ServerMetadata.Players fakedPlayers = new ServerMetadata.Players(GunpowderMod.getInstance().getServer().getMaxPlayerCount(), fakedGameProfiles.size());
+        int max = GunpowderMod.getInstance().getServer().getMaxPlayerCount();
+        if(max == playerList.size()) {
+            // Server is full, faking the max player count
+            max = fakedGameProfiles.size();
+        }
+        ServerMetadata.Players fakedPlayers = new ServerMetadata.Players(max, fakedGameProfiles.size());
 
         GameProfile[] gameProfiles = fakedGameProfiles.toArray(new GameProfile[0]);
         fakedPlayers.setSample(gameProfiles);
