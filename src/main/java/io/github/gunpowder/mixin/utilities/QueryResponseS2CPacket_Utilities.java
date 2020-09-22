@@ -29,6 +29,7 @@ import io.github.gunpowder.api.GunpowderMod;
 import io.github.gunpowder.mixin.cast.PlayerVanish;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,10 +51,12 @@ public class QueryResponseS2CPacket_Utilities {
     @Inject(method = "write(Lnet/minecraft/network/PacketByteBuf;)V", at = @At("HEAD"))
     private void excludeVanished(PacketByteBuf buf, CallbackInfo ci) {
 
+        final PlayerManager playerManager = GunpowderMod.getInstance().getServer().getPlayerManager();
+
         // List where "faked" GameProfiles will be stored (all the players except vanished)
         List<GameProfile> fakedGameProfiles = new ArrayList<>();
         // Original player list
-        List<ServerPlayerEntity> playerList = GunpowderMod.getInstance().getServer().getPlayerManager().getPlayerList();
+        List<ServerPlayerEntity> playerList = playerManager.getPlayerList();
 
         // Excluding vanished players
         for (ServerPlayerEntity player : playerList) {
@@ -65,10 +68,6 @@ public class QueryResponseS2CPacket_Utilities {
         }
 
         int max = GunpowderMod.getInstance().getServer().getMaxPlayerCount();
-        if(max == playerList.size()) {
-            // Server is full, faking the max player count
-            max = fakedGameProfiles.size();
-        }
         ServerMetadata.Players fakedPlayers = new ServerMetadata.Players(max, fakedGameProfiles.size());
 
         GameProfile[] gameProfiles = fakedGameProfiles.toArray(new GameProfile[0]);
