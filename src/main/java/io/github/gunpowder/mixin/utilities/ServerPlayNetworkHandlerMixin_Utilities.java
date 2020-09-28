@@ -78,8 +78,8 @@ public class ServerPlayNetworkHandlerMixin_Utilities {
     )
     private void noVanishDisconnectMessage(Text reason, CallbackInfo ci) {
         if(((PlayerVanish) player).isVanished()) {
-            PlayerManager playerManager = this.server.getPlayerManager();
-            ((VanishedPlayerManager) playerManager).setVanishedCount(((VanishedPlayerManager) playerManager).getVanishedCount() - 1);
+            VanishedPlayerManager vanishedPlayerManager = (VanishedPlayerManager) this.server.getPlayerManager();
+            vanishedPlayerManager.setVanishedCount(vanishedPlayerManager.getVanishedCount() - 1);
             this.player.onDisconnect();
             this.server.getPlayerManager().remove(this.player);
             if (this.server.isHost(this.player.getGameProfile())) {
