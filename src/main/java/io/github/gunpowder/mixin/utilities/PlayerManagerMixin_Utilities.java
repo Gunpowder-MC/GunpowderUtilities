@@ -58,13 +58,12 @@ public class PlayerManagerMixin_Utilities implements VanishedPlayerManager {
             method = "checkCanJoin(Ljava/net/SocketAddress;Lcom/mojang/authlib/GameProfile;)Lnet/minecraft/text/Text;",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/server/PlayerManager;canBypassPlayerLimit(Lcom/mojang/authlib/GameProfile;)Z",
-                    shift = At.Shift.BEFORE
+                    target = "Lnet/minecraft/server/PlayerManager;canBypassPlayerLimit(Lcom/mojang/authlib/GameProfile;)Z"
             ),
             cancellable = true
     )
     private void checkCanJoinServer(SocketAddress address, GameProfile profile, CallbackInfoReturnable<Text> cir) {
-        PlayerManager manager = GunpowderMod.getInstance().getServer().getPlayerManager();
+        PlayerManager manager = (PlayerManager) (Object) this;
         cir.setReturnValue(
                 this.players.size() - ((VanishedPlayerManager) manager).getVanishedCount() >= this.maxPlayers && !manager.canBypassPlayerLimit(profile) ?
                         new TranslatableText("multiplayer.disconnect.server_full") :
@@ -82,6 +81,4 @@ public class PlayerManagerMixin_Utilities implements VanishedPlayerManager {
     public void setVanishedCount(int vanishedCount) {
         this.vanishedCount = vanishedCount;
     }
-
-
 }
