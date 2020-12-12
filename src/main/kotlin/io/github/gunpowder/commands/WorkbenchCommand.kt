@@ -27,13 +27,11 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.screen.CraftingScreenHandler
 import net.minecraft.screen.ScreenHandlerContext
-import net.minecraft.screen.ScreenHandlerFactory
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.stat.Stats
 import net.minecraft.text.TranslatableText
 
 object WorkbenchCommand {
@@ -46,7 +44,14 @@ object WorkbenchCommand {
     }
 
     private fun openWorkbench(context: CommandContext<ServerCommandSource>): Int {
-        context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> CraftingScreenHandler(i, playerInventory, ScreenHandlerContext.EMPTY) }, TranslatableText("container.crafting")))
+        val player = context.source.player
+        player.openHandledScreen(
+                SimpleNamedScreenHandlerFactory(
+                        { syncId, inv, _ -> CraftingScreenHandler(syncId, inv, ScreenHandlerContext.EMPTY) },
+                        TranslatableText("container.crafting")
+                )
+        )
+        player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE)
         return 1
     }
 }
