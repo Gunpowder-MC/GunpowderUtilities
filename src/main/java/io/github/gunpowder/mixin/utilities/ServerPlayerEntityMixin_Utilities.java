@@ -26,7 +26,6 @@ package io.github.gunpowder.mixin.utilities;
 
 import io.github.gunpowder.api.GunpowderMod;
 import io.github.gunpowder.mixin.cast.PlayerVanish;
-import net.fabricmc.fabric.impl.networking.server.EntityTrackerStreamAccessor;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.PlayerManager;
@@ -69,7 +68,7 @@ public class ServerPlayerEntityMixin_Utilities implements PlayerVanish {
 
         // Starting / stopping the player tracking
         // This actually removes the player (otherwise hacked clients still see the it with certain hacks)
-        ((EntityTrackerStreamAccessor) trackerEntry).fabric_getTrackingPlayers().forEach(
+        trackerEntry.getPlayersTracking().forEach(
                 tracking -> {
                     if (enabled)
                         trackerEntry.getEntry().stopTracking(tracking);

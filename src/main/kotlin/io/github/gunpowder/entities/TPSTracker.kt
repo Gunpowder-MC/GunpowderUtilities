@@ -24,33 +24,37 @@
 
 package io.github.gunpowder.entities
 
-import java.lang.Double.min
+import com.google.common.math.Stats
+import com.google.common.math.StatsAccumulator
+import java.util.concurrent.TimeUnit
+import kotlin.math.min
 
 class TPSTracker {
-    private var lastTime = System.nanoTime()
-    private val history = mutableListOf<Double>()
-    private val msptHistory = mutableListOf<Long>()
-    private val intervalTicks = 1000 / 20  // max tps = 20
+    private val tracker = mutableListOf<Double>()
+    private var tickStart = System.nanoTime()
 
     fun startTick() {
-        lastTime = System.nanoTime()
+        tickStart = System.nanoTime()
     }
 
     fun endTick() {
-        val startTime = System.nanoTime()
-        var timeSpent = (startTime - lastTime) / 1000  // Millis
-        if (timeSpent == 0L) {
-            timeSpent = 1
+        val tickEnd = System.nanoTime()
+        val timeSpent = (tickEnd - tickStart)
+        val ms = TimeUnit.NANOSECONDS.toMillis(timeSpent)
+
+        tracker.add(ms.toDouble())
+        while (tracker.count() > 200) {
+            // More than 10 seconds
+            tracker.removeAt(0)
         }
-        if (history.size > 1200) {  // Average over the last minute
-            history.removeAt(0)
-            msptHistory.removeAt(0)
-        }
-        val tps = intervalTicks * 1_000_000.0 / timeSpent
-        history.add(min(tps, 20.0))
-        msptHistory.add(timeSpent / 1000)
     }
 
-    fun getTps(): Double = history.average()
-    fun getMspt(): Double = msptHistory.average()
+    private fun getStats(): Stats {
+        val acc = StatsAccumulator()
+        acc.addAll(tracker.toList())
+        return acc.snapshot()
+    }
+
+    fun getTps(): Double = min(20.0, 1000.0 / getMspt())
+    fun getMspt(): Double = getStats().mean()
 }
