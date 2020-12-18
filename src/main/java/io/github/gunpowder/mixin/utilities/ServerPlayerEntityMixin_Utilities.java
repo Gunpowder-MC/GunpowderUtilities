@@ -27,7 +27,6 @@ package io.github.gunpowder.mixin.utilities;
 import io.github.gunpowder.api.GunpowderMod;
 import io.github.gunpowder.mixin.cast.PlayerVanish;
 import io.github.gunpowder.mixin.cast.VanishedPlayerManager;
-import net.fabricmc.fabric.impl.networking.server.EntityTrackerStreamAccessor;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.PlayerManager;
