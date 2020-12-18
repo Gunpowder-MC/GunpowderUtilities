@@ -45,10 +45,6 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
-        name = "Jitpack"
-        url = "https://jitpack.io"
-    }
-    maven {
         name = "Ladysnake Libs"
         url = "https://dl.bintray.com/ladysnake/libs"
     }
@@ -56,7 +52,10 @@ repositories {
         name = "Gunpowder"
         url = "https://maven.martmists.com/releases"
     }
-    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    maven {
+        name = "Jitpack"
+        url = "https://jitpack.io"
+    }
 }
 
 // Dependencies
@@ -68,14 +67,8 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$project.fabric_api"
 
     // Gunpowder
-    implementation "io.github.gunpowder:gunpowder-api:${project.gunpowder}+${project.minecraft}"
-
-    // Database
-    implementation "org.jetbrains.exposed:exposed-core:$project.exposed"
-    implementation "org.jetbrains.exposed:exposed-java-time:$project.exposed"
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$project.kotlin"
+    modCompileOnly "io.github.gunpowder:gunpowder-api:${project.gunpowder}+${project.minecraft}"
+    modRuntime "io.github.gunpowder:gunpowder-base:${project.gunpowder}+${project.minecraft}"
 
     // Other mods
     modImplementation("io.github.ladysnake:PlayerAbilityLib:${project.pal}") { transitive = false }
@@ -154,7 +147,7 @@ if (file('secrets.gradle').exists()) {
         publications {
             mavenJava(MavenPublication) {
                 afterEvaluate {
-                    artifact source: file("${jarpath}-maven.jar"), classifier: ''
+                    artifact source: file("${jarpath}.jar"), classifier: ''
                     artifact source: file("${jarpath}-dev.jar"), classifier: 'dev'
                     artifact source: file("${jarpath}-sources.jar"), classifier: 'sources'
                     artifact source: file("${jarpath}-sources-dev.jar"), classifier: 'sources-dev'

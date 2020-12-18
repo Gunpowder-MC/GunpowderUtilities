@@ -40,12 +40,12 @@ object HeadCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("head") {
+                requires { it.hasPermissionLevel(4) }
+
                 argument("player", StringArgumentType.string()) {
-                    requires { it.hasPermissionLevel(4) }
                     executes(HeadCommand::getSkull)
 
                     argument("amount", IntegerArgumentType.integer(1, 64)) {
-                        requires { it.hasPermissionLevel(4) }
                         executes(HeadCommand::getSkullAmount)
                     }
                 }
@@ -63,7 +63,7 @@ object HeadCommand {
 
     private fun getSkull(context: CommandContext<ServerCommandSource>): Int {
         val player = StringArgumentType.getString(context, "player")
-        giveHead(context.source.player, player, 0)
+        giveHead(context.source.player, player, 1)
         return 1
     }
 

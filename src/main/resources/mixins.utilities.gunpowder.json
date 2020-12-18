@@ -12,7 +12,8 @@
     "QueryResponseS2CPacket_Utilities",
     "ServerPlayerEntityMixin_Utilities",
     "ServerPlayNetworkHandlerMixin_Utilities",
-    "ThreadedAnvilChunkStorageAccessor_Utilities"
+    "ThreadedAnvilChunkStorageAccessor_Utilities",
+    "CraftingScreenHandlerMixin_Utilities"
   ],
   "client": [
   ],

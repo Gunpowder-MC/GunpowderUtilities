@@ -75,7 +75,7 @@ public class ServerPlayerEntityMixin_Utilities implements PlayerVanish {
 
         // Starting / stopping the player tracking
         // This actually removes the player (otherwise hacked clients still see the it with certain hacks)
-        ((EntityTrackerStreamAccessor) trackerEntry).fabric_getTrackingPlayers().forEach(
+        trackerEntry.getPlayersTracking().forEach(
                 tracking -> {
                     if (enabled)
                         trackerEntry.getEntry().stopTracking(tracking);
