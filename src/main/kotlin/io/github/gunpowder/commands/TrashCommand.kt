@@ -49,7 +49,7 @@ object TrashCommand {
         val player = context.source.player;
         val emptyInventory = SimpleInventory(27)
 
-        player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, emptyInventory) }, LiteralText("Trash can")))
+        player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, emptyInventory) }, LiteralText("Trash can")))
 
         return 1
     }
