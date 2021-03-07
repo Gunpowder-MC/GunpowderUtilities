@@ -58,7 +58,7 @@ object FlightCommand {
 
         // Send feedback
         commandContext.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.flight.toggle.self").translateTextForPlayer(commandContext.source.player),
+                TranslatedText("gunpowder_utilities.flight.toggle.self").translateTextForPlayer(commandContext.source.player),
                 false)
 
         return 1
@@ -73,7 +73,7 @@ object FlightCommand {
 
         // Send feedback
         commandContext.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.flight.toggle.other", player.displayName.asString()).translateTextForPlayer(commandContext.source.player),
+                TranslatedText("gunpowder_utilities.flight.toggle.other", player.displayName.asString()).translateTextForPlayer(commandContext.source.player),
                 false)
 
         return 1

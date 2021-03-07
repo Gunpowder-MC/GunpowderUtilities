@@ -53,9 +53,9 @@ object VanishCommand {
         ctx.source.player.sendMessage(
                 TranslatedText(
                         if (player.isVanished)
-                            "gunpowder-utilities.vanish.toggle.on"
+                            "gunpowder_utilities.vanish.toggle.on"
                         else
-                            "gunpowder-utilities.vanish.toggle.off"
+                            "gunpowder_utilities.vanish.toggle.off"
                 ).translateTextForPlayer(ctx.source.player).formatted(Formatting.AQUA),
                 true
         )
@@ -67,9 +67,9 @@ object VanishCommand {
         player.sendMessage(
                 TranslatedText(
                         if ((player as PlayerVanish).isVanished)
-                            "gunpowder-utilities.vanish.info.on"
+                            "gunpowder_utilities.vanish.info.on"
                         else
-                            "gunpowder-utilities.vanish.info.off"
+                            "gunpowder_utilities.vanish.info.off"
                 ).translateTextForPlayer(ctx.source.player).formatted(Formatting.AQUA),
                 true
         )

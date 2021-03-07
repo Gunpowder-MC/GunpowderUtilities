@@ -54,7 +54,7 @@ object InvseeCommand {
 
         context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? ->
             GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X4, i, playerInventory, player.inventory, 4)
-        }, TranslatedText("gunpowder-utilities.invsee.title", player.entityName).translateTextForPlayer(context.source.player)))
+        }, TranslatedText("gunpowder_utilities.invsee.title", player.entityName).translateTextForPlayer(context.source.player)))
 
         return 1
     }

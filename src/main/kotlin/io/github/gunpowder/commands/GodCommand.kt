@@ -57,7 +57,7 @@ object GodCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.god.toggle.self").translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.god.toggle.self").translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -72,7 +72,7 @@ object GodCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.god.toggle.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.god.toggle.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
 
         return 1

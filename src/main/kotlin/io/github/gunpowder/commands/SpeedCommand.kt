@@ -69,7 +69,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.speed.clear.self").translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.speed.clear.self").translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -81,7 +81,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.speed.clear.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.speed.clear.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -93,7 +93,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.speed.set.self", speed).translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.speed.set.self", speed).translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -106,7 +106,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.speed.set.other", player.displayName.asString(), speed).translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.speed.set.other", player.displayName.asString(), speed).translateTextForPlayer(context.source.player),
                 false)
 
         return 1

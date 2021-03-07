@@ -51,7 +51,7 @@ object HealCommand {
     private fun healSelf(context: CommandContext<ServerCommandSource>): Int {
         healPlayer(context.source.player)
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.heal.self").translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.heal.self").translateTextForPlayer(context.source.player),
                 false)
         return 1
     }
@@ -60,7 +60,7 @@ object HealCommand {
         val player = EntityArgumentType.getPlayer(context, "player")
         healPlayer(player)
         context.source.sendFeedback(
-                TranslatedText("gunpowder-utilities.heal.other",player.displayName.asString()).translateTextForPlayer(context.source.player),
+                TranslatedText("gunpowder_utilities.heal.other",player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
         return 1
     }

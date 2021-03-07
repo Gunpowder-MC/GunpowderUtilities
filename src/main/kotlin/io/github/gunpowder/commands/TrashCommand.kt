@@ -51,7 +51,7 @@ object TrashCommand {
 
         player.openHandledScreen(
             SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, emptyInventory) },
-            TranslatedText("gunpowder-utilities.trash.title").translateTextForPlayer(context.source.player)))
+            TranslatedText("gunpowder_utilities.trash.title").translateTextForPlayer(context.source.player)))
 
         return 1
     }
