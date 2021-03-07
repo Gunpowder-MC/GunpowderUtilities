@@ -28,12 +28,12 @@ import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.DoubleArgumentType
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import io.github.ladysnake.pal.Pal
 import io.github.gunpowder.mixin.cast.SpeedSetter
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
 
 object SpeedCommand {
     val ESSENTIALS_ABILITY_SPEED = Pal.getAbilitySource("essentials", "speed");
@@ -69,7 +69,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully reset speed"),
+                TranslatedText("gunpowder-utilities.speed.clear.self").translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -81,7 +81,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully reset speed for ${player.displayName.asString()}"),
+                TranslatedText("gunpowder-utilities.speed.clear.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -93,7 +93,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully set speed to $speed"),
+                TranslatedText("gunpowder-utilities.speed.set.self", speed).translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -106,7 +106,7 @@ object SpeedCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully set speed for ${player.displayName.asString()} to $speed"),
+                TranslatedText("gunpowder-utilities.speed.set.other", player.displayName.asString(), speed).translateTextForPlayer(context.source.player),
                 false)
 
         return 1

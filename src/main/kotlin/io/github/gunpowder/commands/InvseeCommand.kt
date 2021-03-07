@@ -27,6 +27,7 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -35,7 +36,6 @@ import net.minecraft.screen.ScreenHandlerFactory
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.text.LiteralText
 
 object InvseeCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -54,7 +54,7 @@ object InvseeCommand {
 
         context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory(ScreenHandlerFactory { i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? ->
             GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X4, i, playerInventory, player.inventory, 4)
-        }, LiteralText("${player.entityName}'s Inventory")))
+        }, TranslatedText("gunpowder-utilities.invsee.title", player.entityName).translateTextForPlayer(context.source.player)))
 
         return 1
     }
