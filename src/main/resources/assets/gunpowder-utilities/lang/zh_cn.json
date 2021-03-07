@@ -14,5 +14,7 @@
   "gunpowder_utilities.speed.set.other": "成功把%s的速度设置为%f",
   "gunpowder_utilities.trash.title": "垃圾箱",
   "gunpowder_utilities.heal.self": "成功治疗",
-  "gunpowder_utilities.heal.other": "成功治疗%s"
+  "gunpowder_utilities.heal.other": "成功治疗%s",
+  "gunpowder_utilities.tps.dimension": "维度",
+  "gunpowder_utilities.tps.overall": "总体：%s"
 }

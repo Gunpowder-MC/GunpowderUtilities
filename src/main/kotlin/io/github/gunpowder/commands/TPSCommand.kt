@@ -29,6 +29,7 @@ import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.GunpowderUtilitiesModule
 import io.github.gunpowder.api.builders.Command
 import io.github.gunpowder.api.builders.Text
+import io.github.gunpowder.api.util.TranslatedText
 import io.github.gunpowder.ext.precision
 import net.minecraft.server.command.ServerCommandSource
 
@@ -49,14 +50,15 @@ object TPSCommand {
         val width = trackers.map { (k, _) -> k.length }.toList().max()!! + 1
 
         context.source.player.sendMessage(Text.builder {
-            text("${"Dimension".padEnd(width, ' ')} | TPS   | MSPT")
+            text("${TranslatedText("gunpowder_utilities.tps.dimension").translateForPlayer(context.source.player).padEnd(width, ' ')} | TPS   | MSPT\n")
             trackers.forEach { id, tracker ->
                 val tps = tracker.getTps()
                 val mspt = tracker.getMspt()
                 total += tps
-                text("\n${id.padEnd(width, ' ')} | ${tps.precision(2).padEnd(5, ' ')} | ${mspt.precision(2)}")
+                text("${id.padEnd(width, ' ')} | ${tps.precision(2).padEnd(5, ' ')} | ${mspt.precision(2)}\n")
             }
-            text("\nOverall: ${(total / count).precision(2)}")
+            //NOTE: This could use fun translated if it supports translateForPlayer, wait for api update
+            text(TranslatedText("gunpowder_utilities.tps.overall", (total / count).precision(2)).translateForPlayer(context.source.player))
         }, false)
         return 1
     }

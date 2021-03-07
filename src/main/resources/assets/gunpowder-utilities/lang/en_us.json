@@ -14,5 +14,7 @@
   "gunpowder_utilities.speed.set.other": "Successfully set speed for %s to %f",
   "gunpowder_utilities.trash.title": "Trash can",
   "gunpowder_utilities.heal.self": "Successfully healed",
-  "gunpowder_utilities.heal.other": "Successfully healed %s"
+  "gunpowder_utilities.heal.other": "Successfully healed %s",
+  "gunpowder_utilities.tps.dimension": "Dimension",
+  "gunpowder_utilities.tps.overall": "Overall: %s"
 }

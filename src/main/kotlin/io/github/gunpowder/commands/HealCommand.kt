@@ -31,7 +31,6 @@ import io.github.gunpowder.api.util.TranslatedText
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
 
 object HealCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
