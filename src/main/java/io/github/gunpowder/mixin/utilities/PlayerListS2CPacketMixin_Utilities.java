@@ -49,9 +49,10 @@ public class PlayerListS2CPacketMixin_Utilities {
     @Inject(method = "write(Lnet/minecraft/network/PacketByteBuf;)V", at = @At(value = "HEAD"))
     void skipVanished(PacketByteBuf buf, CallbackInfo ci) {
         if (this.entries.iterator().hasNext() && this.action.equals(PlayerListS2CPacket.Action.ADD_PLAYER)) {
-            this.entries.removeIf(entry ->
-                ((PlayerVanish) GunpowderMod.getInstance().getServer().getPlayerManager().getPlayer(entry.getProfile().getId())).isVanished()
-            );
+            this.entries.removeIf(entry -> {
+                PlayerVanish player = GunpowderMod.getInstance().getServer().getPlayerManager().getPlayer(entry.getProfile().getId());
+                return player != null && player.isVanished();
+            });
         }
 
     }
