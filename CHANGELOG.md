@@ -1,6 +1,14 @@
-# Gunpowder Utilities 1.0.3
+# Gunpowder Utilities 1.0.4
 
 - None
+
+
+---
+# Gunpowder Utilities 1.0.3
+
+- Fix a few Vanish bugs
+- Add TranslatedText support
+- Fix compat with Taterzens/Disguiselib
 
 ---
 # Gunpowder Utilities 1.0.2

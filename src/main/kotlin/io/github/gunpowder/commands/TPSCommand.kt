@@ -47,7 +47,7 @@ object TPSCommand {
 
         var total = 0.0
         val count = trackers.size
-        val width = trackers.map { (k, _) -> k.length }.toList().max()!! + 1
+        val width = trackers.map { (k, _) -> k.length }.toList().maxOrNull()!! + 1
 
         context.source.player.sendMessage(Text.builder {
             text("${TranslatedText("gunpowder_utilities.tps.dimension").translateForPlayer(context.source.player).padEnd(width, ' ')} | TPS   | MSPT\n")
