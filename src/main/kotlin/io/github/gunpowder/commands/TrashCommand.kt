@@ -27,6 +27,7 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.SimpleInventory
@@ -34,7 +35,6 @@ import net.minecraft.screen.GenericContainerScreenHandler
 import net.minecraft.screen.ScreenHandlerFactory
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory
 import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.text.LiteralText
 
 object TrashCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -49,7 +49,9 @@ object TrashCommand {
         val player = context.source.player;
         val emptyInventory = SimpleInventory(27)
 
-        player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, emptyInventory) }, LiteralText("Trash can")))
+        player.openHandledScreen(
+            SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? -> GenericContainerScreenHandler.createGeneric9x3(i, playerInventory, emptyInventory) },
+            TranslatedText("gunpowder_utilities.trash.title").translateTextForPlayer(context.source.player)))
 
         return 1
     }

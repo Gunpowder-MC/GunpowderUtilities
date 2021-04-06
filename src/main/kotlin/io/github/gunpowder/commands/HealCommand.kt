@@ -27,10 +27,10 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
 
 object HealCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
@@ -50,7 +50,7 @@ object HealCommand {
     private fun healSelf(context: CommandContext<ServerCommandSource>): Int {
         healPlayer(context.source.player)
         context.source.sendFeedback(
-                LiteralText("Successfully healed"),
+                TranslatedText("gunpowder_utilities.heal.self").translateTextForPlayer(context.source.player),
                 false)
         return 1
     }
@@ -59,7 +59,7 @@ object HealCommand {
         val player = EntityArgumentType.getPlayer(context, "player")
         healPlayer(player)
         context.source.sendFeedback(
-                LiteralText("Successfully healed ${player.displayName.asString()}"),
+                TranslatedText("gunpowder_utilities.heal.other",player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
         return 1
     }

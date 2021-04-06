@@ -27,12 +27,12 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import io.github.ladysnake.pal.Pal
 import io.github.ladysnake.pal.VanillaAbilities
 import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.LiteralText
 
 object GodCommand {
     val ESSENTIALS_ABILITY_GOD = Pal.getAbilitySource("essentials", "godmode")
@@ -57,7 +57,7 @@ object GodCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully toggled godmode"),
+                TranslatedText("gunpowder_utilities.god.toggle.self").translateTextForPlayer(context.source.player),
                 false)
 
         return 1
@@ -72,7 +72,7 @@ object GodCommand {
 
         // Send feedback
         context.source.sendFeedback(
-                LiteralText("Successfully toggled godmode for ${player.displayName.asString()}"),
+                TranslatedText("gunpowder_utilities.god.toggle.other", player.displayName.asString()).translateTextForPlayer(context.source.player),
                 false)
 
         return 1

@@ -1,0 +1,20 @@
+{
+  "gunpowder_utilities.flight.toggle.self": "成功切换飞行模式",
+  "gunpowder_utilities.flight.toggle.other": "成功为%s切换飞行模式",
+  "gunpowder_utilities.vanish.toggle.on": "嘭！你成功隐身了",
+  "gunpowder_utilities.vanish.toggle.off": "你结束了了隐身状态",
+  "gunpowder_utilities.vanish.info.on": "你正在隐身状态",
+  "gunpowder_utilities.vanish.info.off": "你不在隐身状态",
+  "gunpowder_utilities.god.toggle.self": "成功切换无敌模式",
+  "gunpowder_utilities.god.toggle.other": "成功为%s切换无敌模式",
+  "gunpowder_utilities.invsee.title": "%s的背包",
+  "gunpowder_utilities.speed.clear.self": "成功重置速度",
+  "gunpowder_utilities.speed.clear.other": "成功为%s重置速度",
+  "gunpowder_utilities.speed.set.self": "成功将速度设置为%f",
+  "gunpowder_utilities.speed.set.other": "成功把%s的速度设置为%f",
+  "gunpowder_utilities.trash.title": "垃圾箱",
+  "gunpowder_utilities.heal.self": "成功治疗",
+  "gunpowder_utilities.heal.other": "成功治疗%s",
+  "gunpowder_utilities.tps.dimension": "维度",
+  "gunpowder_utilities.tps.overall": "总体：%s"
+}

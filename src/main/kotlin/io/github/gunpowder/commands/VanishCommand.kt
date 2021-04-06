@@ -27,9 +27,9 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.util.TranslatedText
 import io.github.gunpowder.mixin.cast.PlayerVanish
 import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.text.LiteralText
 import net.minecraft.util.Formatting
 
 object VanishCommand {
@@ -51,12 +51,12 @@ object VanishCommand {
 
         // Sending info to player
         ctx.source.player.sendMessage(
-                LiteralText(
+                TranslatedText(
                         if (player.isVanished)
-                            "Puff! You have vanished from the world."
+                            "gunpowder_utilities.vanish.toggle.on"
                         else
-                            "You are now no longer vanished."
-                ).formatted(Formatting.AQUA),
+                            "gunpowder_utilities.vanish.toggle.off"
+                ).translateTextForPlayer(ctx.source.player).formatted(Formatting.AQUA),
                 true
         )
         return 1
@@ -65,12 +65,12 @@ object VanishCommand {
     private fun displayVanishInfo(ctx: CommandContext<ServerCommandSource>): Int {
         val player = ctx.source.player
         player.sendMessage(
-                LiteralText(
+                TranslatedText(
                         if ((player as PlayerVanish).isVanished)
-                            "You are vanished."
+                            "gunpowder_utilities.vanish.info.on"
                         else
-                            "You're not vanished."
-                ).formatted(Formatting.AQUA),
+                            "gunpowder_utilities.vanish.info.off"
+                ).translateTextForPlayer(ctx.source.player).formatted(Formatting.AQUA),
                 true
         )
         return 1
