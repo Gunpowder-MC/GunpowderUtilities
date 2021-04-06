@@ -24,23 +24,69 @@
 
 package io.github.gunpowder.mixin.utilities;
 
+import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.mixin.cast.VanishedPlayerManager;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import io.netty.util.internal.logging.AbstractInternalLogger;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
+import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin_Utilities {
+
+    @Final
+    @Shadow
+    private static Logger LOGGER;
+
+    @Shadow
+    public ServerPlayerEntity player;
+
+    @Final
+    @Shadow
+    private MinecraftServer server;
+
+
     @Inject(method = "sendPacket(Lnet/minecraft/network/Packet;Lio/netty/util/concurrent/GenericFutureListener;)V", at = @At("HEAD"), cancellable = true)
     void noEmptyPlayerPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> listener, CallbackInfo ci) {
         // Disabled as getEntries is client-only
         //if (packet instanceof PlayerListS2CPacket && ((PlayerListS2CPacket) packet).getEntries().size() == 0) {
         //    ci.cancel();
         //}
+    }
+
+    @Inject(
+            method = "onDisconnected(Lnet/minecraft/text/Text;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/PlayerManager;broadcastChatMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/MessageType;Ljava/util/UUID;)V",
+                    shift = At.Shift.BEFORE
+            ),
+            cancellable = true
+    )
+    private void noVanishDisconnectMessage(Text reason, CallbackInfo ci) {
+        if(((PlayerVanish) player).isVanished()) {
+            VanishedPlayerManager vanishedPlayerManager = (VanishedPlayerManager) this.server.getPlayerManager();
+            vanishedPlayerManager.setVanishedCount(vanishedPlayerManager.getVanishedCount() - 1);
+            this.player.onDisconnect();
+            this.server.getPlayerManager().remove(this.player);
+            if (this.server.isHost(this.player.getGameProfile())) {
+                LOGGER.info("Stopping singleplayer server as player logged out");
+                this.server.stop(false);
+            }
+            ci.cancel();
+        }
     }
 }

@@ -26,6 +26,7 @@ package io.github.gunpowder.mixin.utilities;
 
 import io.github.gunpowder.api.GunpowderMod;
 import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.mixin.cast.VanishedPlayerManager;
 import net.minecraft.network.MessageType;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.PlayerManager;
@@ -62,6 +63,11 @@ public class ServerPlayerEntityMixin_Utilities implements PlayerVanish {
                         player
                 )
         );
+
+        // Updating vanished count
+        VanishedPlayerManager vanishedPlayerManager = (VanishedPlayerManager) playerManager;
+        int vanishedCount = vanishedPlayerManager.getVanishedCount();
+        vanishedPlayerManager.setVanishedCount(enabled ? vanishedCount + 1 : vanishedCount - 1);
 
         ThreadedAnvilChunkStorage storage = ((ServerChunkManager) player.world.getChunkManager()).threadedAnvilChunkStorage;
         EntityTrackerAccessor_Utilities trackerEntry = ((ThreadedAnvilChunkStorageAccessor_Utilities) storage).getEntityTrackers().get(player.getEntityId());
