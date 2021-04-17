@@ -1,7 +1,7 @@
 # Gunpowder Utilities 1.0.4
 
-- None
-
+- Invsee now supports enderchest and offline players
+- Invsee no longer requires you to be within 64 blocks of the target
 
 ---
 # Gunpowder Utilities 1.0.3
