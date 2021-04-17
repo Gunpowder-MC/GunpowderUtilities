@@ -8,6 +8,7 @@
   "gunpowder_utilities.god.toggle.self": "Successfully toggled godmode",
   "gunpowder_utilities.god.toggle.other": "Successfully toggled godmode for %s",
   "gunpowder_utilities.invsee.title": "%s's Inventory",
+  "gunpowder_utilities.invsee.title_enderchest": "%s's Ender Chest",
   "gunpowder_utilities.speed.clear.self": "Successfully reset speed",
   "gunpowder_utilities.speed.clear.other": "Successfully reset speed for %s",
   "gunpowder_utilities.speed.set.self": "Successfully set speed to %f",
