@@ -26,12 +26,14 @@ package io.github.gunpowder.mixin.utilities;
 
 import com.mojang.authlib.GameProfile;
 import io.github.gunpowder.api.GunpowderMod;
-import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.api.components.ComponentsKt;
+import io.github.gunpowder.entities.VanishComponent;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.query.QueryResponseS2CPacket;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,12 +41,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Mixin(QueryResponseS2CPacket.class)
 public class QueryResponseS2CPacket_Utilities {
 
+    @Final
     @Shadow
     private ServerMetadata metadata;
 
@@ -60,7 +62,7 @@ public class QueryResponseS2CPacket_Utilities {
 
         // Excluding vanished players
         for (ServerPlayerEntity player : playerList) {
-            if (((PlayerVanish) player).isVanished()) {
+            if (ComponentsKt.with(player, VanishComponent.class).isVanished()) {
                 continue;
             }
 

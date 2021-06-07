@@ -24,15 +24,13 @@
 
 package io.github.gunpowder.mixin.utilities;
 
-import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.api.components.ComponentsKt;
+import io.github.gunpowder.entities.VanishComponent;
 import io.github.gunpowder.mixin.cast.VanishedPlayerManager;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import io.netty.util.internal.logging.AbstractInternalLogger;
 import net.minecraft.network.Packet;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -49,7 +47,7 @@ public class ServerPlayNetworkHandlerMixin_Utilities {
 
     @Final
     @Shadow
-    private static Logger LOGGER;
+    static Logger LOGGER;
 
     @Shadow
     public ServerPlayerEntity player;
@@ -77,7 +75,7 @@ public class ServerPlayNetworkHandlerMixin_Utilities {
             cancellable = true
     )
     private void noVanishDisconnectMessage(Text reason, CallbackInfo ci) {
-        if(((PlayerVanish) player).isVanished()) {
+        if(ComponentsKt.with(player, VanishComponent.class).isVanished()) {
             VanishedPlayerManager vanishedPlayerManager = (VanishedPlayerManager) this.server.getPlayerManager();
             vanishedPlayerManager.setVanishedCount(vanishedPlayerManager.getVanishedCount() - 1);
             this.player.onDisconnect();

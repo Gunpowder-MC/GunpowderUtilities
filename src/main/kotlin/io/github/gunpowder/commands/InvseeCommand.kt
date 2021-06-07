@@ -61,7 +61,7 @@ object InvseeCommand {
         val profile = GameProfileArgumentType.getProfileArgument(context, "player").first()
 
         var offline = false
-        val player = server.playerManager.getPlayer(profile.id) ?: ServerPlayerEntity(server, server.overworld, profile, ServerPlayerInteractionManager(server.overworld)).also {
+        val player = server.playerManager.getPlayer(profile.id) ?: ServerPlayerEntity(server, server.overworld, profile).also {
             server.playerManager.loadPlayerData(it)
             offline = true
         }
@@ -69,10 +69,6 @@ object InvseeCommand {
         context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? ->
             GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i, playerInventory, player.enderChestInventory, 3).apply {
                 addListener(object : ScreenHandlerListener {
-                    override fun onHandlerRegistered(handler: ScreenHandler?, stacks: DefaultedList<ItemStack>?) {
-                        // pass
-                    }
-
                     override fun onSlotUpdate(handler: ScreenHandler?, slotId: Int, stack: ItemStack?) {
                         // save
                         if (offline) {
@@ -98,7 +94,7 @@ object InvseeCommand {
         val profile = GameProfileArgumentType.getProfileArgument(context, "player").first()
 
         var offline = false
-        val player = server.playerManager.getPlayer(profile.id) ?: ServerPlayerEntity(server, server.overworld, profile, ServerPlayerInteractionManager(server.overworld)).also {
+        val player = server.playerManager.getPlayer(profile.id) ?: ServerPlayerEntity(server, server.overworld, profile).also {
             server.playerManager.loadPlayerData(it)
             offline = true
         }
@@ -106,10 +102,6 @@ object InvseeCommand {
         context.source.player.openHandledScreen(SimpleNamedScreenHandlerFactory({ i: Int, playerInventory: PlayerInventory?, _: PlayerEntity? ->
             GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X4, i, playerInventory, player.inventory, 4).apply {
                 addListener(object : ScreenHandlerListener {
-                    override fun onHandlerRegistered(handler: ScreenHandler?, stacks: DefaultedList<ItemStack>?) {
-                        // pass
-                    }
-
                     override fun onSlotUpdate(handler: ScreenHandler?, slotId: Int, stack: ItemStack?) {
                         // save
                         if (offline) {

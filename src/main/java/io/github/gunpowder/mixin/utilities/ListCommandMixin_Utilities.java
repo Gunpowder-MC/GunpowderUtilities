@@ -25,7 +25,8 @@
 package io.github.gunpowder.mixin.utilities;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.api.components.ComponentsKt;
+import io.github.gunpowder.entities.VanishComponent;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ListCommand;
 import net.minecraft.server.command.ServerCommandSource;
@@ -50,7 +51,7 @@ public class ListCommandMixin_Utilities {
             method = "execute(Lnet/minecraft/server/command/ServerCommandSource;Ljava/util/function/Function;)I",
             at = @At(
                     value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/text/Texts;join(Ljava/util/Collection;Ljava/util/function/Function;)Lnet/minecraft/text/MutableText;"
+                    target = "Lnet/minecraft/text/Texts;join(Ljava/util/Collection;Ljava/util/function/Function;)Lnet/minecraft/text/Text;"
             ),
             locals = LocalCapture.CAPTURE_FAILHARD,
             cancellable = true
@@ -59,11 +60,11 @@ public class ListCommandMixin_Utilities {
     private static void executeListCommand(ServerCommandSource source, Function<ServerPlayerEntity, Text> nameProvider, CallbackInfoReturnable<Integer> cir, PlayerManager playerManager, List<ServerPlayerEntity> list, Text text) {
         try {
             // If player is not vanished hidden players must be removed from list
-            if (!((PlayerVanish) source.getPlayer()).isVanished()) {
+            if (!ComponentsKt.with(source.getPlayer(), VanishComponent.class).isVanished()) {
                 List<ServerPlayerEntity> playerList = new ArrayList<>(list);
 
                 // Removing vanished players from list
-                playerList.removeIf(playerEntity -> ((PlayerVanish) playerEntity).isVanished());
+                playerList.removeIf(playerEntity -> ComponentsKt.with(playerEntity, VanishComponent.class).isVanished());
 
                 text = Texts.join(playerList, nameProvider);
 

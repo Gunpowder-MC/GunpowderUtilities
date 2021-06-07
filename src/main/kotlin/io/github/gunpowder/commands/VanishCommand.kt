@@ -27,8 +27,9 @@ package io.github.gunpowder.commands
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.gunpowder.api.builders.Command
+import io.github.gunpowder.api.components.with
 import io.github.gunpowder.api.util.TranslatedText
-import io.github.gunpowder.mixin.cast.PlayerVanish
+import io.github.gunpowder.entities.VanishComponent
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.util.Formatting
 
@@ -46,13 +47,13 @@ object VanishCommand {
     }
 
     private fun toggleVanish(ctx: CommandContext<ServerCommandSource>): Int {
-        val player = ctx.source.player as PlayerVanish
-        player.isVanished = !player.isVanished
+        val player = ctx.source.player.with<VanishComponent>()
+        player.setVanished(!player.isVanished())
 
         // Sending info to player
         ctx.source.player.sendMessage(
                 TranslatedText(
-                        if (player.isVanished)
+                        if (player.isVanished())
                             "gunpowder_utilities.vanish.toggle.on"
                         else
                             "gunpowder_utilities.vanish.toggle.off"
@@ -66,7 +67,7 @@ object VanishCommand {
         val player = ctx.source.player
         player.sendMessage(
                 TranslatedText(
-                        if ((player as PlayerVanish).isVanished)
+                        if (player.with<VanishComponent>().isVanished())
                             "gunpowder_utilities.vanish.info.on"
                         else
                             "gunpowder_utilities.vanish.info.off"

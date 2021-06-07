@@ -26,6 +26,7 @@ package io.github.gunpowder.mixin.utilities;
 
 import net.minecraft.server.network.EntityTrackerEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.EntityTrackingListener;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
@@ -36,6 +37,6 @@ public interface EntityTrackerAccessor_Utilities {
     @Accessor("entry")
     EntityTrackerEntry getEntry();
 
-    @Accessor("playersTracking")
-    Set<ServerPlayerEntity> getPlayersTracking();
+    @Accessor("listeners")
+    Set<EntityTrackingListener> getPlayersTracking();
 }

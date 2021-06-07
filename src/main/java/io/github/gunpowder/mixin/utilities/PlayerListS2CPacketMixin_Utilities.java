@@ -25,9 +25,11 @@
 package io.github.gunpowder.mixin.utilities;
 
 import io.github.gunpowder.api.GunpowderMod;
-import io.github.gunpowder.mixin.cast.PlayerVanish;
+import io.github.gunpowder.api.components.ComponentsKt;
+import io.github.gunpowder.entities.VanishComponent;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -50,8 +52,8 @@ public class PlayerListS2CPacketMixin_Utilities {
     void skipVanished(PacketByteBuf buf, CallbackInfo ci) {
         if (this.entries.iterator().hasNext() && this.action.equals(PlayerListS2CPacket.Action.ADD_PLAYER)) {
             this.entries.removeIf(entry -> {
-                PlayerVanish player = (PlayerVanish) GunpowderMod.getInstance().getServer().getPlayerManager().getPlayer(entry.getProfile().getId());
-                return player != null && player.isVanished();
+                ServerPlayerEntity p = GunpowderMod.getInstance().getServer().getPlayerManager().getPlayer(entry.getProfile().getId());
+                return p != null && ComponentsKt.with(p, VanishComponent.class).isVanished();
             });
         }
 

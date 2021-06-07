@@ -26,14 +26,21 @@ package io.github.gunpowder
 
 import io.github.gunpowder.api.GunpowderMod
 import io.github.gunpowder.api.GunpowderModule
+import io.github.gunpowder.api.components.bind
 import io.github.gunpowder.commands.*
 import io.github.gunpowder.entities.TPSTracker
+import io.github.gunpowder.entities.VanishComponent
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
+import net.minecraft.server.network.ServerPlayerEntity
 
 class GunpowderUtilitiesModule : GunpowderModule {
     override val name = "utilities"
     override val toggleable = true
     val gunpowder = GunpowderMod.instance
+
+    override fun registerComponents() {
+        ServerPlayerEntity::class.bind<VanishComponent>()
+    }
 
     override fun registerCommands() {
         gunpowder.registry.registerCommand(EnderchestCommand::register)

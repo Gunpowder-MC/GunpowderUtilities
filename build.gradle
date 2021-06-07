@@ -13,7 +13,18 @@ buildscript {
 
 // Plugins
 plugins {
-    id 'io.github.gunpowder' version '0.2.0'
+    id 'io.github.gunpowder' version '0.2.5.1'
+}
+
+repositories {
+    maven {
+        name = 'Ladysnake Mods'
+        url = 'https://ladysnake.jfrog.io/artifactory/mods'
+        content {
+            includeGroup 'io.github.ladysnake'
+            includeGroupByRegex 'io\\.github\\.onyxstudios.*'
+        }
+    }
 }
 
 dependencies {

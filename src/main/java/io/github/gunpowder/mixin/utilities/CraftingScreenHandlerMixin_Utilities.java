@@ -28,10 +28,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.AbstractRecipeScreenHandler;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.*;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,10 +45,6 @@ public abstract class CraftingScreenHandlerMixin_Utilities extends AbstractRecip
         super(screenHandlerType, i);
     }
 
-    @Shadow
-    protected static void updateResult(int syncId, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
-    }
-
     @Shadow @Final private PlayerEntity player;
 
     @Shadow @Final private CraftingInventory input;
@@ -60,10 +53,13 @@ public abstract class CraftingScreenHandlerMixin_Utilities extends AbstractRecip
 
     @Shadow public abstract void close(PlayerEntity player);
 
+    @Shadow protected static void updateResult(ScreenHandler screenHandler, World world, PlayerEntity player, CraftingInventory craftingInventory, CraftingResultInventory resultInventory) {
+    }
+
     @Inject(method = "onContentChanged", at = @At(value = "HEAD", target = "Lnet/minecraft/screen/CraftingScreenHandler;onContentChanged(Lnet/minecraft/inventory/Inventory;)V"), cancellable = true)
     private void modifyContentChanged(Inventory inventory, CallbackInfo ci) {
         if (context == ScreenHandlerContext.EMPTY) {
-            updateResult(this.syncId, this.player.getEntityWorld(), this.player, this.input, this.result);
+            updateResult(this, this.player.getEntityWorld(), this.player, this.input, this.result);
             ci.cancel();
         }
     }
@@ -72,7 +68,7 @@ public abstract class CraftingScreenHandlerMixin_Utilities extends AbstractRecip
     private void modifyClose(PlayerEntity player, CallbackInfo ci) {
         if (context == ScreenHandlerContext.EMPTY) {
             super.close(player);
-            this.dropInventory(player, player.world, input);
+            this.dropInventory(player, input);
             ci.cancel();
         }
     }
