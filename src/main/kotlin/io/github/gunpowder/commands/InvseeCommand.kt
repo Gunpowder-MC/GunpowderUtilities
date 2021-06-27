@@ -44,11 +44,12 @@ object InvseeCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("invsee") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.invsee")
                 argument("player", GameProfileArgumentType.gameProfile()) {
                     executes(InvseeCommand::execute)
 
                     literal("enderchest", "echest") {
+                        permission("utilities.invsee.enderchest")
                         executes(InvseeCommand::executeEnder)
                     }
                 }

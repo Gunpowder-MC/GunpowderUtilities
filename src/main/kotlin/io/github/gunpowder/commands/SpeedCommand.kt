@@ -41,22 +41,18 @@ object SpeedCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("speed") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.speed.self")
                 executes(SpeedCommand::clearSpeedSelf)
 
                 argument("player", EntityArgumentType.player()) {
-                    requires { it.hasPermissionLevel(4) }
-
                     executes(SpeedCommand::clearSpeedOther)
                 }
 
                 argument("speed", DoubleArgumentType.doubleArg(0.0, 10.0)) {
-                    requires { it.hasPermissionLevel(4) }
+                    permission("utilities.speed.other")
                     executes(SpeedCommand::setSpeedSelf)
 
                     argument("player", EntityArgumentType.player()) {
-                        requires { it.hasPermissionLevel(4) }
-
                         executes(SpeedCommand::setSpeedOther)
                     }
                 }

@@ -40,6 +40,7 @@ object TrashCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("trash") {
+                permission("utilities.trash", 0)
                 executes(TrashCommand::openTrash)
             }
         }

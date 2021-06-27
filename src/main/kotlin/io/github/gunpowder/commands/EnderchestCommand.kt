@@ -41,6 +41,7 @@ object EnderchestCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("enderchest", "ec") {
+                permission("utilities.enderchest", 0)
                 executes(EnderchestCommand::openEnderchest)
             }
         }

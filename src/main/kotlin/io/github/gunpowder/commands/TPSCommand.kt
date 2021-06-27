@@ -37,6 +37,7 @@ object TPSCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("tps") {
+                permission("utilities.tps", 0)
                 executes(::execute)
             }
         }

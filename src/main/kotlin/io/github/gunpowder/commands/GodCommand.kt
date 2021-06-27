@@ -40,11 +40,11 @@ object GodCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("god") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.god.self")
 
                 executes(GodCommand::toggleGodSelf)
                 argument("player", EntityArgumentType.player()) {
-                    requires { it.hasPermissionLevel(4) }
+                    permission("utilities.god.other")
                     executes(GodCommand::toggleGodOther)
                 }
             }

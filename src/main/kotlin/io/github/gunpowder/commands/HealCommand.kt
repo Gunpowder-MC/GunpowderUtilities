@@ -36,11 +36,11 @@ object HealCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("heal") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.heal.self")
                 executes(HealCommand::healSelf)
 
                 argument("player", EntityArgumentType.player()) {
-                    requires { it.hasPermissionLevel(4) }
+                    permission("utilities.heal.other")
                     executes(HealCommand::healOther)
                 }
             }

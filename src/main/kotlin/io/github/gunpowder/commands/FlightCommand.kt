@@ -40,11 +40,11 @@ object FlightCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("flight", "fly") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.fly.self")
 
                 executes(FlightCommand::toggleFlightSelf)
                 argument("player", EntityArgumentType.player()) {
-                    requires { it.hasPermissionLevel(4) }
+                    permission("utilities.fly.other")
 
                     executes(FlightCommand::toggleFlightOther)
                 }

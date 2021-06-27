@@ -1,5 +1,11 @@
 # Gunpowder Utilities 1.0.5
 
+- Permissions
+
+---
+
+# Gunpowder Utilities 1.0.5
+
 - Update to 1.17
 - Update PAL to 1.3.0
 - Migrate PlayerVanish to component

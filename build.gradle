@@ -1,42 +1,9 @@
-buildscript {
-    dependencies {
-        constraints {
-            ["asm", "asm-util", "asm-tree", "asm-analysis"].forEach {
-                classpath("org.ow2.asm:$it") {
-                    version { require("9.0") }
-                    because("Fabric's TinyRemapper requires ASM 9")
-                }
-            }
-        }
-    }
-}
-
 // Plugins
 plugins {
-    id 'io.github.gunpowder' version '0.2.6'
-}
-
-repositories {
-    maven {
-        name = 'Ladysnake Mods'
-        url = 'https://ladysnake.jfrog.io/artifactory/mods'
-        content {
-            includeGroup 'io.github.ladysnake'
-            includeGroupByRegex 'io\\.github\\.onyxstudios.*'
-        }
-    }
+    id 'io.github.gunpowder' version '0.3.0'
 }
 
 dependencies {
-    constraints {
-        ["asm", "asm-util", "asm-tree", "asm-analysis"].forEach {
-            implementation("org.ow2.asm:$it") {
-                version { require("9.0") }
-                because("Fabric's TinyRemapper requires ASM 9")
-            }
-        }
-    }
-
-    modImplementation("io.github.ladysnake:PlayerAbilityLib:${project.pal}")
-    modRuntime("io.github.ladysnake:PlayerAbilityLib:${project.pal}")
+    modImplementation libs.pal
+    modRuntime libs.pal
 }

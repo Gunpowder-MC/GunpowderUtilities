@@ -37,7 +37,7 @@ object VanishCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("vanish") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.vanish", 4)
                 literal("toggle") {
                     executes(VanishCommand::toggleVanish)
                 }

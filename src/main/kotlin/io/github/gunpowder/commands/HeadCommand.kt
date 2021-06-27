@@ -40,9 +40,10 @@ object HeadCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("head") {
-                requires { it.hasPermissionLevel(4) }
+                permission("utilities.head")
 
                 argument("player", StringArgumentType.string()) {
+                    permission("utilities.head.target")
                     executes(HeadCommand::getSkull)
 
                     argument("amount", IntegerArgumentType.integer(1, 64)) {

@@ -34,6 +34,7 @@ object HatCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("hat") {
+                permission("utilities.hat", 0)
                 executes(HatCommand::execute)
             }
         }

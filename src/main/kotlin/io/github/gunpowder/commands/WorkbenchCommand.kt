@@ -38,6 +38,7 @@ object WorkbenchCommand {
     fun register(dispatcher: CommandDispatcher<ServerCommandSource>) {
         Command.builder(dispatcher) {
             command("workbench", "wb") {
+                permission("utilities.workbench", 0)
                 executes(WorkbenchCommand::openWorkbench)
             }
         }
