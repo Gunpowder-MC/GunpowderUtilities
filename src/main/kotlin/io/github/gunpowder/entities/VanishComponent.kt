@@ -83,7 +83,7 @@ class VanishComponent : Component<ServerPlayerEntity>() {
         val trackerEntry = (storage as ThreadedAnvilChunkStorageAccessor_Utilities).entityTrackers[bound.id]
 
         // Starting / stopping the player tracking
-        // This actually removes the player (otherwise hacked clients still see the it with certain hacks)
+        // This actually removes the player (otherwise hacked clients still see it with certain hacks)
         trackerEntry?.playersTracking?.forEach(
             Consumer { tracking: EntityTrackingListener ->
                 if (enabled) trackerEntry.entry.stopTracking(tracking.player) else trackerEntry.entry.startTracking(tracking.player)
@@ -95,6 +95,6 @@ class VanishComponent : Component<ServerPlayerEntity>() {
             if (enabled) "multiplayer.player.left" else "multiplayer.player.joined",
             bound.displayName
         )
-        playerManager.broadcastChatMessage(msg.formatted(Formatting.YELLOW), MessageType.SYSTEM, Util.NIL_UUID)
+        playerManager.broadcast(msg.formatted(Formatting.YELLOW), MessageType.SYSTEM, Util.NIL_UUID)
     }
 }

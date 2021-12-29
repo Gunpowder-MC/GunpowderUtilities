@@ -1,4 +1,10 @@
-# Gunpowder Utilities 1.0.5
+# Gunpowder Utilities 1.0.6
+
+- Update to 1.18
+
+---
+
+# Gunpowder Utilities 1.0.6
 
 - Permissions
 

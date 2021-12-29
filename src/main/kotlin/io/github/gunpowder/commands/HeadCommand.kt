@@ -70,9 +70,9 @@ object HeadCommand {
 
     private fun giveHead(player: ServerPlayerEntity, targetPlayer: String, amount: Int) {
         val stack = ItemStack(Items.PLAYER_HEAD, amount)
-        val compound = stack.orCreateTag
+        val compound = stack.orCreateNbt
         compound.putString("SkullOwner", targetPlayer)
-        stack.tag = compound
+        stack.nbt = compound
 
         if (player.giveItemStack(stack)) {
             // Unable to insert

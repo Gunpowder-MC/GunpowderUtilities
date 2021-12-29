@@ -64,7 +64,7 @@ object SeenCommand {
                     )
                 )
             } else {
-                val server = context.source.minecraftServer
+                val server = context.source.server
                 var offline = false
                 val player = server.playerManager.getPlayer(profile.id) ?: ServerPlayerEntity(server, server.overworld, profile).also { p ->
                     p.readCustomDataFromNbt(server.playerManager.loadPlayerData(p))
